@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pls dont quit</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #121620; /* Deep, calming dark blue */
+            color: #e0e6ed;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: min-content;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Audio Control Button (Top Right Corner) */
+        .audio-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 10;
+        }
+
+        .audio-btn {
+            background-color: #1a2030;
+            border: 1px solid #2e384d;
+            color: #93c5fd;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .audio-btn:hover {
+            background-color: #2563eb;
+            color: #ffffff;
+            border-color: #2563eb;
+        }
+
+        /* Floating Ko-fi Button (Bottom Left Corner) */
+        .kofi-floating {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 100;
+        }
+
+        .kofi-btn {
+            background-color: #ff5e5b; /* Ko-fi Signature Red/Coral */
+            color: #ffffff;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(255, 94, 91, 0.3);
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+
+        .kofi-btn:hover {
+            background-color: #ff4a47;
+            transform: translateY(-2px);
+        }
+
+        /* Container Layout */
+        .container {
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3.5rem;
+            margin: auto 0;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            color: #a3b8cc;
+        }
+
+        /* Breathing Circle Section */
+        .breathing-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .circle-container {
+            width: 200px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .breathing-circle {
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(147,197,253,0.3) 0%, rgba(59,130,246,0.1) 100%);
+            border: 2px solid #60a5fa;
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(96, 165, 250, 0.2);
+            animation: breathe 16s infinite ease-in-out;
+        }
+
+        #breathing-text {
+            font-size: 1.1rem;
+            color: #93c5fd;
+            letter-spacing: 1px;
+            min-height: 1.5rem;
+        }
+
+        /* Box Breathing Animation (4s In, 4s Hold, 4s Out, 4s Hold) */
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.8); }
+            50% { transform: scale(1.8); }
+            75% { transform: scale(1); }
+        }
+
+        /* Message Box Section */
+        .message-section {
+            background-color: #1a2030;
+            border: 1px solid #2e384d;
+            border-radius: 16px;
+            padding: 2rem;
+            width: 100%;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        #reminder-text {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: #cbd5e1;
+            min-height: 4.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.4s ease;
+        }
+
+        .btn {
+            background-color: #2563eb;
+            color: #ffffff;
+            border: none;
+            padding: 0.8rem 1.8rem;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+
+        .btn:hover {
+            background-color: #3b82f6;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Critical Hotline Banner */
+        .footer-banner {
+            margin-top: auto;
+            padding-top: 2rem;
+            font-size: 0.9rem;
+            color: #64748b;
+            line-height: 1.5;
+            margin-bottom: 40px; /* Leave space so it doesn't overlap the Ko-fi button on small mobile views */
+        }
+
+        .footer-banner a {
+            color: #93c5fd;
+            text-decoration: none;
+        }
+
+        .footer-banner a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Audio Element -->
+    <audio id="bg-music" src="relax.mp3" loop autoplay></audio>
+
+    <!-- Audio Toggle Button -->
+    <div class="audio-controls">
+        <button class="audio-btn" id="music-toggle" onclick="toggleMusic()">
+            ⏸️ Pause Music
+        </button>
+    </div>
+
+    <!-- Floating Ko-fi Donation Link Connected to appsguy -->
+    <div class="kofi-floating">
+        <a href="https://ko-fi.com/appsguy" target="_blank" class="kofi-btn">
+            ☕ Support on Ko-fi
+        </a>
+    </div>
+
+    <div class="container">
+        <h1>pls dont quit.</h1>
+
+        <!-- Grounding & Breathing Box -->
+        <div class="breathing-section">
+            <div class="circle-container">
+                <div class="breathing-circle"></div>
+            </div>
+            <div id="breathing-text">Breathe with the circle...</div>
+        </div>
+
+        <!-- Encouraging Words Block -->
+        <div class="message-section">
+            <div id="reminder-text">Take a deep breath. You don't have to figure everything out right this second.</div>
+            <button class="btn" onclick="nextReminder()">Give me another reminder</button>
+        </div>
+
+        <!-- Safe Hotline Support Footer -->
+        <div class="footer-banner">
+            Need someone to talk to right now? You are not alone.<br>
+            In the Philippines, call the NCMH Crisis Hotline at <b>1553</b> or <b>0917-899-8727</b>.<br>
+            Outside the PH? Find your free local lifeline at <a href="https://findahelpline.com/" target="_blank">findahelpline.com</a>
+        </div>
+    </div>
+
+    <script>
+        const music = document.getElementById('bg-music');
+        const musicBtn = document.getElementById('music-toggle');
+        
+        // Lower default volume slightly so it is smooth and atmospheric
+        music.volume = 0.4;
+
+        function toggleMusic() {
+            if (music.paused) {
+                music.play();
+                musicBtn.innerText = "⏸️ Pause Music";
+            } else {
+                music.pause();
+                musicBtn.innerText = "🎵 Play Music";
+            }
+        }
+
+        // BROWSER AUTOPLAY FIX
+        function forceAutoplay() {
+            if (music.paused) {
+                music.play().then(() => {
+                    musicBtn.innerText = "⏸️ Pause Music";
+                }).catch(err => {
+                    console.log("Autoplay waiting for direct interaction...");
+                });
+            }
+            document.removeEventListener('click', forceAutoplay);
+            document.removeEventListener('touchstart', forceAutoplay);
+        }
+
+        document.addEventListener('click', forceAutoplay);
+        document.addEventListener('touchstart', forceAutoplay);
+
+        // Array of comforting, low-pressure messages
+        const reminders = [
+            "It is completely okay to just get through today. You don't have to do anything else.",
+            "You are allowed to rest. Your worth isn't tied to your productivity or how fast you finish things.",
+            "If code is breaking or life feels chaotic, step back. The world can wait while you take a breather.",
+            "You have survived 100% of your hardest days so far. You are doing better than you give yourself credit for.",
+            "Please be gentle with yourself. You are doing the best you can with what you have right now.",
+            "Things feel completely overwhelming right now, but feelings change. Give yourself a little more time."
+        ];
+
+        let currentIndex = 0;
+
+        function nextReminder() {
+            const textBox = document.getElementById('reminder-text');
+            textBox.style.opacity = 0; // Smooth fade out
+            
+            setTimeout(() => {
+                currentIndex = (currentIndex + 1) % reminders.length;
+                textBox.innerText = reminders[currentIndex];
+                textBox.style.opacity = 1; // Smooth fade in
+            }, 400);
+        }
+
+        // Script to dynamically change text matching the CSS breathing keyframes
+        const breathingText = document.getElementById('breathing-text');
+        const phases = ["Breathe in...", "Hold...", "Breathe out...", "Hold..."];
+        let phaseIndex = 0;
+
+        setInterval(() => {
+            breathingText.innerText = phases[phaseIndex];
+            phaseIndex = (phaseIndex + 1) % phases.length;
+        }, 4000); 
+    </script>
+
+</body>
+</html>
